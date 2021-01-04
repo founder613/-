@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bjpowernode.springcloud.dao.PaymentDao">
+   
+    <resultMap id="BaseResultMap" type="com.bjpowernode.springcloud.entities.Payment">
+	   <id column="id" property="id" jdbcType="BIGINT"></id>
+	   <result column="serial" property="serial" jdbcType="VARCHAR"></result>
+   </resultMap>
+
+   <select id="getPaymentById" parameterType="Long"  resultMap="BaseResultMap">
+        SELECT * FROM payment WHERE id=#{id}
+    </select>
+    
+    
+<!-- 有些版本用这种写法  <insert id="create" parameterType="Payment" useGeneratedkeys="true"  keyProperty="id" > -->
+     <insert id="create" parameterType="Payment" >
+      <selectKey keyProperty="id"  order="AFTER" resultType="int">
+		SELECT LAST_INSERT_ID()
+	  </selectKey>
+        INSERT payment(SERIAL) VALUES(#{serial})
+      </insert> 
+</mapper>
